@@ -16,7 +16,8 @@ export default function Catalog() {
     setLoading(true)
     let q = supabase.from('products').select('*').order('created_at', { ascending: false })
     if (activeCategory !== 'Всі') q = q.eq('category', activeCategory)
-    q.then(({ data }) => {
+    q.then(({ data, error }) => {
+      if (error) console.error('Supabase error:', error)
       setProducts(data || [])
       setLoading(false)
     })

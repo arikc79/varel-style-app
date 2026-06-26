@@ -11,6 +11,8 @@ const navItems = [
 export default function BottomNav() {
   const location = useLocation()
 
+  if (/^\/product\//.test(location.pathname)) return null
+
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] flex justify-around items-center py-2 bg-surface-container z-50 border-t border-outline-variant/20 shadow-[0_-4px_20px_rgba(201,168,76,0.08)]">
       {navItems.map(({ path, icon, label }) => {
