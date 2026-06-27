@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 
 const CATEGORIES = ['Джинси', 'Сорочки', 'Костюми', 'Спорт', 'Куртки', 'Кросівки']
 
@@ -17,8 +17,12 @@ export default function Admin() {
 
   async function fetchProducts() {
     setLoading(true)
-    const { data } = await supabase.from('products').select('*').order('created_at', { ascending: false })
-    setProducts(data || [])
+    try {
+      const data = await api.getProducts()
+      setProducts(data)
+    } catch (e) {
+      console.error(e)
+    }
     setLoading(false)
   }
 
@@ -48,37 +52,11 @@ export default function Admin() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    setSaving(true)
-    setMessage(null)
-
-    const payload = {
-      ...form,
-      price: parseInt(form.price),
-      badge: form.badge || null,
-    }
-
-    let error
-    if (editId) {
-      ;({ error } = await supabase.from('products').update(payload).eq('id', editId))
-    } else {
-      ;({ error } = await supabase.from('products').insert(payload))
-    }
-
-    if (error) {
-      setMessage({ type: 'error', text: error.message })
-    } else {
-      setMessage({ type: 'ok', text: editId ? 'Товар оновлено' : 'Товар додано' })
-      setEditId(null)
-      setForm(empty)
-      fetchProducts()
-    }
-    setSaving(false)
+    setMessage({ type: 'info', text: 'Керування товарами — через Django Admin на сайті.' })
   }
 
   async function handleDelete(id) {
-    if (!confirm('Видалити товар?')) return
-    await supabase.from('products').delete().eq('id', id)
-    fetchProducts()
+    setMessage({ type: 'info', text: `Видалення через Django Admin: /admin/products/product/${id}/delete/` })
   }
 
   return (

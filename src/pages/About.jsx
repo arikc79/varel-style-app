@@ -1,106 +1,146 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+
+const stats = [
+  { num: '500+', label: 'позицій у каталозі' },
+  { num: '20+',  label: 'років досвіду' },
+  { num: '10к+', label: 'задоволених клієнтів' },
+]
 
 const values = [
   {
-    title: 'Ексклюзивність',
-    text: 'Обмежені тиражі: кожен виріб виготовляється партією не більше 30 одиниць. Без повторів сезону.',
-    image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&q=80',
-    colSpan: 'md:col-span-2 md:row-span-2',
+    title: 'Повсякденний стиль',
+    text: 'Від класичного костюму для важливих зустрічей до стильного повсякденного образу — у нас є все для кожного дня.',
   },
   {
-    title: 'Майстерність',
-    text: 'Ручна обробка країв, французькі шви, перевірка кожного стібка перед відправкою.',
-    image: null,
-    colSpan: '',
+    title: 'Якість і ціна',
+    text: 'Тільки перевірені бренди та якісні матеріали. Справедлива ціна без переплати за назву.',
   },
   {
-    title: 'Спадщина',
-    text: 'Класичний крій із Неаполя, адаптований під сучасний гардероб.',
-    image: null,
-    colSpan: '',
-  },
-  {
-    title: 'Матеріали',
-    text: 'Тканини від Vitale Barberis Canonico та Solbiati — вовна, льон, бавовна преміум-класу.',
-    image: null,
-    colSpan: 'md:col-span-2',
+    title: 'Досвід і довіра',
+    text: '20 років у чоловічій моді. Ми знаємо що потрібно кожному клієнту і допоможемо знайти свій стиль.',
   },
 ]
 
 export default function About() {
   return (
-    <main className="min-h-screen pt-16">
+    <main className="min-h-screen pt-16 pb-24">
+
       {/* Hero */}
-      <section className="relative h-[500px] flex flex-col justify-end px-6 pb-12 overflow-hidden">
+      <section className="relative flex flex-col justify-end px-6 pb-12 overflow-hidden" style={{ height: '60vh' }}>
         <div className="absolute inset-0 z-0">
           <img
-            className="w-full h-full object-cover opacity-35"
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80"
-            alt="VAREL колекція"
+            className="w-full h-full object-cover object-top"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCp7A566_x6jXzXelnBrdxUCRJ1aIvHBY2UbnzfPxV7yv9PKUEVCB_srJ4MAxZ7Nj-mp9IGDri5rr2K36bDXesLd8bM7cuJ168ogJI3osm52Q-FbZB9MEHJw2tClVkCMrhuRLqTt6vBZbAVxqK2_flTnJJrl1XmW9uINrh5ro7u6xiwo9-P_zuNeN6o-oUb61IS7BmKJTWt-1TGKOkTqtvafvs3-RzF3eAMbKXLY5U87jmpl_degYvTbED3i9LL6DTxFcprJbFYOfk"
+            alt="VAREL"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-surface-main via-surface-main/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface-main via-surface-main/60 to-surface-main/20" />
         </div>
-        <div className="relative z-10">
-          <h1 className="font-garamond text-4xl text-on-surface leading-tight mb-3">
-            Про VAREL
-          </h1>
-          <p className="font-montserrat text-sm text-on-surface-variant leading-relaxed max-w-xs">
-            Вінниця, 2020. Чоловічий одяг із натуральних тканин — без масових партій, без компромісів.
+        <motion.div
+          className="relative z-10"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <p className="font-montserrat text-[10px] tracking-[0.4em] uppercase text-primary mb-3">
+            Since 2020 · Вінниця
           </p>
-        </div>
+          <h1 className="font-garamond text-4xl text-on-surface leading-tight mb-4">
+            Стиль — це не одяг.<br />
+            Це <em className="text-primary not-italic">відношення</em> до себе.
+          </h1>
+          <p className="font-montserrat text-sm text-on-surface-variant leading-relaxed max-w-sm">
+            VAREL everyday style — чоловічий одяг для тих, хто цінує якість і виглядає впевнено в будь-якій ситуації.
+          </p>
+        </motion.div>
       </section>
 
-      {/* Brand Story */}
-      <section className="py-12 px-4 grid grid-cols-1 gap-10 items-center">
-        <div className="relative group">
-          <div className="absolute -inset-3 border border-primary/15 translate-x-3 translate-y-3 group-hover:translate-x-1.5 group-hover:translate-y-1.5 transition-transform duration-500" />
-          <img
-            className="relative z-10 w-full aspect-[4/3] object-cover grayscale contrast-125"
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80"
-            alt="VAREL Atelier"
-            loading="lazy"
-          />
-        </div>
-        <div className="flex flex-col gap-5">
+      {/* Stats */}
+      <section className="grid grid-cols-3 border-y border-outline-variant/15 my-8">
+        {stats.map((s, i) => (
+          <motion.div
+            key={s.num}
+            className={`py-7 flex flex-col items-center gap-1 ${i < 2 ? 'border-r border-outline-variant/15' : ''}`}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+          >
+            <span className="font-garamond text-3xl text-primary">{s.num}</span>
+            <span className="font-montserrat text-[9px] uppercase tracking-widest text-on-surface-variant text-center">{s.label}</span>
+          </motion.div>
+        ))}
+      </section>
+
+      {/* Story */}
+      <section className="px-4 mb-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col gap-4"
+        >
           <h2 className="font-garamond text-2xl text-on-surface">Наша Історія</h2>
           <p className="font-montserrat text-sm text-on-surface-variant leading-relaxed">
-            VAREL починався як ательє для чоловіків, яким набридло обирати між масмаркетом і завищеними цінами за бренд. Перша колекція — 12 позицій, всі розпродані за 3 тижні. З того часу ми не змінили принципів: малі партії, перевірені матеріали, жодної синтетики без причини.
+            VAREL починався як простий задум: зробити якісний чоловічий одяг доступним. Не масмаркет і не люксовий бутик — а розумний вибір для чоловіка, який поважає себе.
           </p>
           <p className="font-montserrat text-sm text-on-surface-variant leading-relaxed">
-            Зараз у каталозі понад 500 позицій, але кожна проходить відбір вручну. Якщо щось не відповідає стандарту — не потрапляє до продажу.
+            Сьогодні в нашому каталозі понад 500 позицій: від джинсів та сорочок до костюмів, курток та взуття. Кожна позиція проходить ручний відбір — якщо не відповідає стандарту, не потрапляє на полицю.
           </p>
-          <Link
-            to="/catalog"
-            className="w-fit mt-2 px-8 py-4 gold-gradient-bg gold-glow-hover font-montserrat text-button-text text-on-primary uppercase tracking-[3px] transition-all duration-300 active:scale-95"
-          >
-            До каталогу
-          </Link>
-        </div>
+        </motion.div>
       </section>
 
       {/* Values */}
-      <section className="py-6 px-4 pb-20">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-          <div className="md:col-span-2 md:row-span-2 bg-surface-card p-8 border border-outline-variant/20 flex flex-col justify-end relative overflow-hidden group min-h-[280px]">
-            <img
-              className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-700"
-              src={values[0].image}
-              alt={values[0].title}
-              loading="lazy"
-            />
-            <div className="relative z-10">
-              <h3 className="font-garamond text-xl mb-3 text-on-surface">{values[0].title}</h3>
-              <p className="font-montserrat text-sm text-on-surface-variant leading-relaxed">{values[0].text}</p>
+      <section className="px-4 mb-10 flex flex-col gap-4">
+        {values.map((v, i) => (
+          <motion.div
+            key={v.title}
+            className="bg-surface-card border border-outline-variant/15 p-6"
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+          >
+            <div className="w-6 h-px bg-primary mb-4" />
+            <h3 className="font-garamond text-lg text-on-surface mb-2">{v.title}</h3>
+            <p className="font-montserrat text-sm text-on-surface-variant leading-relaxed">{v.text}</p>
+          </motion.div>
+        ))}
+      </section>
+
+      {/* Location */}
+      <motion.section
+        className="mx-4 bg-surface-card border border-outline-variant/15 p-6"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <p className="font-montserrat text-[10px] uppercase tracking-[0.35em] text-primary mb-4">Де нас знайти</p>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-start gap-3">
+            <span className="material-symbols-outlined text-primary text-[20px] flex-shrink-0 mt-0.5">location_on</span>
+            <div>
+              <p className="font-montserrat text-sm text-on-surface">вул. Зодчих, 2</p>
+              <p className="font-montserrat text-xs text-on-surface-variant">ТЦ Форум, 2 поверх · Вінниця</p>
             </div>
           </div>
-          {values.slice(1).map((v) => (
-            <div key={v.title} className={`bg-surface-card p-6 border border-outline-variant/20 flex flex-col justify-end ${v.colSpan}`}>
-              <h3 className="font-garamond text-lg mb-2 text-on-surface">{v.title}</h3>
-              <p className="font-montserrat text-sm text-on-surface-variant leading-relaxed">{v.text}</p>
+          <div className="flex items-start gap-3">
+            <span className="material-symbols-outlined text-primary text-[20px] flex-shrink-0 mt-0.5">phone</span>
+            <div>
+              <p className="font-montserrat text-sm text-on-surface">+38 097 410 30 75</p>
+              <p className="font-montserrat text-xs text-on-surface-variant">Пн–Сб: 10:00–20:00 · Нд: 11:00–18:00</p>
             </div>
-          ))}
+          </div>
         </div>
-      </section>
+        <div className="mt-6 h-px bg-outline-variant/15" />
+        <Link
+          to="/catalog"
+          className="mt-5 w-full block text-center gold-gradient-bg gold-glow-hover py-4 font-montserrat text-button-text text-on-primary uppercase tracking-[3px] transition-all active:scale-95"
+        >
+          Переглянути каталог
+        </Link>
+      </motion.section>
+
     </main>
   )
 }

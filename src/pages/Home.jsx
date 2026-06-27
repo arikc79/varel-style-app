@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 
 const HERO_SLIDES = [
   {
@@ -148,10 +148,10 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.from('products').select('*').limit(8).then(({ data }) => {
-      if (data) setFeatured(data)
+    api.getProducts().then(data => {
+      setFeatured(data.slice(0, 8))
       setLoading(false)
-    })
+    }).catch(() => setLoading(false))
   }, [])
 
   return (

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 import { useCart } from '../context/CartContext'
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
@@ -22,18 +22,9 @@ export default function Product() {
   const [added, setAdded] = useState(false)
 
   useEffect(() => {
-    async function fetchProduct() {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', id)
-        .single()
-
-      if (!error) setProduct(data)
-      setLoading(false)
-    }
-
-    fetchProduct()
+    api.getProduct(id)
+      .then(data => { setProduct(data); setLoading(false) })
+      .catch(() => setLoading(false))
   }, [id])
 
   function handleAdd() {

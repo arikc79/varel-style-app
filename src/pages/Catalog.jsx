@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 
 const categories = ['Всі', 'Джинси', 'Сорочки', 'Костюми', 'Спорт', 'Куртки', 'Кросівки']
 
@@ -14,13 +14,10 @@ export default function Catalog() {
 
   useEffect(() => {
     setLoading(true)
-    let q = supabase.from('products').select('*').order('created_at', { ascending: false })
-    if (activeCategory !== 'Всі') q = q.eq('category', activeCategory)
-    q.then(({ data, error }) => {
-      if (error) console.error('Supabase error:', error)
-      setProducts(data || [])
-      setLoading(false)
-    })
+    const cat = activeCategory !== 'Всі' ? activeCategory : null
+    api.getProducts(cat)
+      .then(data => { setProducts(data); setLoading(false) })
+      .catch(() => setLoading(false))
   }, [activeCategory])
 
   return (
