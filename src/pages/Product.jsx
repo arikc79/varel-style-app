@@ -79,17 +79,12 @@ export default function Product() {
       </div>
 
       {/* Gallery */}
-      <section className="relative w-full aspect-[3/4] md:aspect-video overflow-hidden mt-4">
+      <section className="relative w-full bg-surface-card mt-4">
         <img
-          className="w-full h-full object-cover object-top"
+          className="w-full h-auto object-contain max-h-[70vh]"
           src={product.image}
           alt={product.name}
         />
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3">
-          <div className="w-2 h-2 rounded-full bg-primary" />
-          <div className="w-2 h-2 rounded-full bg-on-surface/30" />
-          <div className="w-2 h-2 rounded-full bg-on-surface/30" />
-        </div>
       </section>
 
       {/* Content */}
