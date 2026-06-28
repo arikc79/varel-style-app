@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 
 export default function Checkout() {
-  const { items, totalPrice } = useCart()
+  const { items, totalPrice, clearCart } = useCart()
   const navigate = useNavigate()
   const [delivery, setDelivery] = useState('nova')
   const [payment, setPayment] = useState('card')
@@ -20,11 +20,36 @@ export default function Checkout() {
     e.preventDefault()
     setSubmitting(true)
     setError(null)
-    const { error } = await supabase.from('orders').insert({
-      ...form, delivery_type: delivery, payment_type: payment, items, total: totalPrice,
-    })
-    if (error) { setError('Помилка. Спробуйте ще раз.'); setSubmitting(false); return }
-    navigate('/order-success')
+
+    const nameParts = form.customer_name.trim().split(' ')
+    const first_name = nameParts[0] || ''
+    const last_name = nameParts.slice(1).join(' ') || ''
+
+    try {
+      await api.createOrder({
+        first_name,
+        last_name,
+        phone: form.phone,
+        city: form.city,
+        branch: form.delivery_branch,
+        delivery_type: delivery,
+        payment_type: payment,
+        total: totalPrice,
+        items: items.map(i => ({
+          product_id: i.id,
+          name: i.name,
+          price: i.price,
+          size: i.size || '',
+          color: i.color || '',
+          qty: i.qty,
+        })),
+      })
+      clearCart()
+      navigate('/order-success')
+    } catch {
+      setError('Помилка. Спробуйте ще раз.')
+      setSubmitting(false)
+    }
   }
 
   const inputClass = "w-full bg-transparent border-b border-outline-variant focus:border-primary text-on-surface placeholder:text-on-surface-variant/55 py-2.5 outline-none transition-all font-montserrat text-sm"

@@ -30,4 +30,17 @@ export const api = {
   async getCategories() {
     return request('/api/categories/')
   },
+
+  async createOrder(orderData) {
+    const res = await fetch(`${BASE_URL}/api/orders/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData),
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(JSON.stringify(err))
+    }
+    return res.json()
+  },
 }
